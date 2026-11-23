@@ -9,7 +9,7 @@ from db import q, ex, one, sha, conn, init, report
 init()
 app = FastAPI(title="Bengkel")
 app.add_middleware(SessionMiddleware, secret_key=os.environ.get("SECRET_KEY", "ganti-dengan-rahasia-anda"))
-T = Jinja2Templates(directory="templates")
+T = Jinja2Templates(directory=os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates"))
 def page(request, name, **ctx): return T.TemplateResponse(request, name, ctx)
 
 class Redir(Exception): pass

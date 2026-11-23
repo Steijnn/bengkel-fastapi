@@ -1,5 +1,10 @@
-import sqlite3, hashlib, os
-DB = "bengkel.db"
+import sqlite3, hashlib, os, shutil
+BASE = os.path.dirname(os.path.abspath(__file__))
+DB = os.path.join(BASE, "bengkel.db")
+if os.environ.get("VERCEL"):  # folder project read-only di Vercel, salin DB ke /tmp
+    _tmp = "/tmp/bengkel.db"
+    if not os.path.exists(_tmp) and os.path.exists(DB): shutil.copy(DB, _tmp)
+    DB = _tmp
 def sha(s): return hashlib.sha256(s.encode()).hexdigest()
 def conn():
     c = sqlite3.connect(DB); c.row_factory = sqlite3.Row; c.execute("PRAGMA foreign_keys=ON"); return c
