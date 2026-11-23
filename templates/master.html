@@ -1,0 +1,13 @@
+{% extends 'base.html' %}{% block body %}
+<div class="c"><h3>{{ 'Edit' if ed else 'Tambah' }} {{ title }}</h3>
+<form method="post" action="/m/{{ t }}"><input type="hidden" name="id" value="{{ ed.get('id', '') }}">
+{% for n, l, ty, x in F %}<label>{{ l }}</label>
+{% set v = ed.get(n) %}{% if v is none %}{% set v = '' %}{% endif %}
+{% if ty == 'select' %}<select name="{{ n }}">{% for o in x %}<option {{ 'selected' if o == v }}>{{ o }}</option>{% endfor %}</select>
+{% elif ty == 'ref' %}<select name="{{ n }}"><option value="">-</option>{% for k, lbl in ref[n].items() %}<option value="{{ k }}" {{ 'selected' if k == v }}>{{ lbl }}</option>{% endfor %}</select>
+{% else %}<input name="{{ n }}" type="{{ ty }}" value="{{ '' if ty == 'password' else (v|string|replace(' ', 'T') if ty == 'datetime-local' else v) }}" {% if ty == 'number' %}step="any"{% endif %} {% if not (ty == 'password' and ed) %}required{% endif %}>{% endif %}
+{% endfor %}<br><button>Simpan</button> {% if ed %}<a href="/m/{{ t }}">Batal</a>{% endif %}</form></div>
+<div class="c">{% if err %}<p class="err">{{ err }}</p>{% endif %}
+<table><tr>{% for n, l, ty, x in F if ty != 'password' %}<th>{{ l }}</th>{% endfor %}<th>Aksi</th></tr>
+{% for r in rows %}<tr>{% for n, l, ty, x in F if ty != 'password' %}<td>{{ ref[n].get(r[n], '-') if ty == 'ref' else r[n] }}</td>{% endfor %}
+<td><a href="/m/{{ t }}?edit={{ r['id'] }}">Edit</a> | <a href="/m/{{ t }}/del/{{ r['id'] }}" onclick="return confirm('Hapus data ini?')">Hapus</a></td></tr>{% endfor %}</table></div>{% endblock %}

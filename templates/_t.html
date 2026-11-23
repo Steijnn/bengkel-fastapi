@@ -1,0 +1,1 @@
+{% macro tbl(rows) %}{% if not rows %}<p>Tidak ada data.</p>{% else %}<table><tr>{% for h in rows[0] if h != 'id' %}<th>{{ h }}</th>{% endfor %}</tr>{% for r in rows %}<tr>{% for k, v in r.items() if k != 'id' %}<td>{{ v }}</td>{% endfor %}</tr>{% endfor %}</table>{% endif %}{% endmacro %}

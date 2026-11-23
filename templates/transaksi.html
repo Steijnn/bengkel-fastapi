@@ -1,0 +1,16 @@
+{% extends 'base.html' %}{% from '_t.html' import tbl %}{% block body %}
+{% if nota %}<div class="c"><h3>Nota {{ nota['nota'] }}</h3><p>{{ nota['tgl'] }} | {{ nota['cn'] }} ({{ nota['plat'] }}) | {{ nota['metode'] }}</p>{{ tbl(det) }}<h3>Total: Rp {{ '{:,}'.format(nota['total']).replace(',', '.') }}</h3><button onclick="print()">🖨 Cetak</button></div>{% endif %}
+<div class="c"><h3>Transaksi Baru</h3>{% if err %}<p class="err">{{ err }}</p>{% endif %}
+<form method="post" action="/transaksi"><label>Customer</label><select name="cust" required>{% for c in cust %}<option value="{{ c['id'] }}">{{ c['nama'] }} - {{ c['plat'] }}</option>{% endfor %}</select>
+<label>Mekanik</label><select name="mek"><option value="">-</option>{% for m in mek %}<option value="{{ m['id'] }}">{{ m['nama'] }}</option>{% endfor %}</select>
+<label>Metode Bayar</label><select name="metode"><option>Tunai</option><option>Transfer</option><option>QRIS</option></select>
+<h4>Item (sparepart &amp; jasa)</h4><div id="rows"></div>
+<template id="tp"><div style="display:grid;grid-template-columns:3fr 1fr;gap:6px"><select name="it" onchange="hit()"><option value="">-- pilih --</option>
+<optgroup label="Sparepart">{% for s in sp %}<option value="s:{{ s['id'] }}" data-h="{{ s['harga_jual'] }}">{{ s['nama'] }} (stok {{ s['stok'] }}) - {{ s['harga_jual'] }}</option>{% endfor %}</optgroup>
+<optgroup label="Jasa">{% for s in js %}<option value="j:{{ s['id'] }}" data-h="{{ s['harga'] }}">{{ s['nama'] }} - {{ s['harga'] }}</option>{% endfor %}</optgroup></select>
+<input type="number" name="qty" value="1" min="1" oninput="hit()"></div></template>
+<button type="button" onclick="add()">+ Item</button> <b>Total: Rp <span id="tot">0</span></b><br><br><button>Simpan Transaksi</button></form></div>
+<script>function add(){rows.append(tp.content.cloneNode(true))}
+function hit(){let t=0;document.querySelectorAll('#rows>div').forEach(d=>{let o=d.querySelector('select').selectedOptions[0];t+=(+o.dataset.h||0)*d.querySelector('input').value});tot.textContent=t.toLocaleString('id-ID')}add()</script>
+<div class="c"><h3>Transaksi Terakhir</h3><table><tr><th>Nota</th><th>Tanggal</th><th>Customer</th><th>Total</th><th>Bayar</th></tr>
+{% for r in last %}<tr><td><a href="/transaksi?id={{ r['id'] }}">{{ r['Nota'] }}</a></td><td>{{ r['Tanggal'] }}</td><td>{{ r['Customer'] }}</td><td>{{ r['Total'] }}</td><td>{{ r['Bayar'] }}</td></tr>{% endfor %}</table></div>{% endblock %}

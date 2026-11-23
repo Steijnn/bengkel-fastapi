@@ -1,0 +1,7 @@
+{% extends 'base.html' %}{% block body %}
+<div class="c auth"><h2>{{ '🔧 Bengkel Login' if mode == 'login' else 'Daftar Akun' }}</h2>{% if err %}<p class="err">{{ err }}</p>{% endif %}
+<form method="post" action="/{{ mode }}">
+{% if mode == 'register' %}<input name="nama" placeholder="Nama lengkap" required>{% endif %}
+<input name="username" placeholder="Username" required><input type="password" name="password" placeholder="Password" required>
+<button style="width:100%">{{ 'Masuk' if mode == 'login' else 'Daftar' }}</button></form>
+<p>{% if mode == 'login' %}<a href="/register">Daftar akun</a>{% else %}<a href="/">Kembali ke login</a>{% endif %}</p></div>{% endblock %}

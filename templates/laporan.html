@@ -1,0 +1,6 @@
+{% extends 'base.html' %}{% from '_t.html' import tbl %}{% block body %}
+<div class="c"><a class="b" href="/laporan?r=1">Sparepart Terlaris</a> <a class="b" href="/laporan?r=2">Riwayat Servis</a> <a class="b" href="/laporan?r=3">Pendapatan</a> <a class="b" href="/laporan?r=4">Kinerja Mekanik</a></div>
+<div class="c"><h3>{{ title }}</h3>
+{% if r == '2' %}<form><input type="hidden" name="r" value="2"><input name="plat" value="{{ plat }}" placeholder="Plat nomor, mis. B 1234 ABC"><button>Cari</button></form>{% endif %}
+{% if r == '3' %}<a href="/laporan?r=3&m=harian">Harian</a> | <a href="/laporan?r=3&m=bulanan">Bulanan</a>{% endif %}
+{{ tbl(rows) }}</div>{% endblock %}

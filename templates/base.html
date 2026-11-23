@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>{% block title %}Bengkel{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f3f5f7;
+  --panel:#ffffff;
+  --panel-2:#f7f9fa;
+  --text:#0e1a23;
+  --muted:#657584;
+  --line:#e3e8ed;
+  --primary:#0f766e;
+  --primary-hover:#0a5d56;
+  --primary-soft:#dff1ee;
+  --on-primary:#ffffff;
+  --danger:#c62828; --danger-soft:#fdecec;
+  --warn:#9a6700;   --warn-soft:#fff3cf;
+  --info:#1d5fb8;   --info-soft:#e4efff;
+  --ok:#17794a;     --ok-soft:#dff5e8;
+  --shadow:0 1px 2px rgba(14,26,35,.05),0 10px 28px rgba(14,26,35,.05);
+  --shadow-lg:0 2px 4px rgba(14,26,35,.06),0 24px 60px rgba(14,26,35,.12);
+  --r:16px;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0b1217; --panel:#131c23; --panel-2:#18242d; --text:#e8eef2; --muted:#8a9aa6; --line:#233039;
+    --primary:#2dd4bf; --primary-hover:#5eead4; --primary-soft:#11353a; --on-primary:#052320;
+    --danger:#ff8a80; --danger-soft:#3a1c1c;
+    --warn:#f6c453;   --warn-soft:#3a2f12;
+    --info:#7db4ff;   --info-soft:#15294a;
+    --ok:#5fd394;     --ok-soft:#133423;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px rgba(0,0,0,.25);
+    --shadow-lg:0 24px 60px rgba(0,0,0,.5);
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+body:not(.app){min-height:100vh;background:
+  radial-gradient(900px 500px at 15% -10%,var(--primary-soft),transparent 60%),
+  radial-gradient(700px 400px at 100% 100%,var(--primary-soft),transparent 55%),var(--bg)}
+a{color:var(--primary);text-underline-offset:3px}
+h2{font-size:26px;line-height:1.2;margin:2px 0 22px;font-weight:800;letter-spacing:-.025em}
+h3{font-size:17px;margin:0 0 14px;font-weight:700;letter-spacing:-.01em}
+h4{font-size:14px;margin:22px 0 8px;font-weight:700}
+
+/* ---------- Ikon ---------- */
+.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* ---------- Layout ---------- */
+body.app{display:grid;grid-template-columns:252px minmax(0,1fr);min-height:100vh}
+main{width:100%;max-width:1040px;margin:0 auto;padding:24px 20px 48px}
+body.app main{margin:0;max-width:none;padding:36px 40px 72px}
+body.app main>*{max-width:1040px}
+
+/* ---------- Sidebar ---------- */
+nav{background:var(--panel);border-right:1px solid var(--line);padding:22px 14px 16px;display:flex;flex-direction:column;gap:3px;position:sticky;top:0;height:100vh;overflow-y:auto}
+nav .brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:19px;letter-spacing:-.025em;padding:2px 10px 22px}
+nav .brand i{display:grid;place-items:center;width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,var(--primary),var(--primary-hover));color:var(--on-primary);box-shadow:0 4px 12px rgba(15,118,110,.3)}
+nav .brand .i{width:19px;height:19px}
+nav a{position:relative;display:flex;align-items:center;gap:12px;color:var(--muted);text-decoration:none;font-weight:600;padding:10px 12px;border-radius:11px;transition:background .15s,color .15s}
+nav a:hover{background:var(--panel-2);color:var(--text)}
+nav a.on{background:var(--primary-soft);color:var(--primary)}
+nav a.on::before{content:"";position:absolute;left:-14px;top:9px;bottom:9px;width:4px;border-radius:0 4px 4px 0;background:var(--primary)}
+nav .who{margin-top:auto;display:flex;align-items:center;gap:11px;border-top:1px solid var(--line);padding:16px 8px 6px}
+nav .who .av{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--primary-soft);color:var(--primary);font-style:normal;font-weight:800;flex:none}
+nav .who b{display:block;color:var(--text);font-size:14px;line-height:1.25}
+nav .who small{color:var(--muted);font-size:12.5px;text-transform:capitalize}
+nav a.out{margin-top:8px}
+nav a.out:hover{background:var(--danger-soft);color:var(--danger)}
+
+/* ---------- Kartu ---------- */
+.c{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:24px;margin-bottom:20px;overflow-x:auto}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;margin-bottom:20px}
+.g .c{position:relative;margin:0;color:var(--muted);font-weight:600;font-size:14px;transition:transform .15s,box-shadow .15s}
+.g .c:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.g .ico{position:absolute;top:20px;right:20px;display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--primary-soft);color:var(--primary)}
+.g .ico .i{width:21px;height:21px}
+.k{font-size:30px;line-height:1.15;font-weight:800;color:var(--text);margin-top:10px;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+.empty{color:var(--muted);text-align:center;padding:22px 0;margin:0}
+
+/* ---------- Tabel ---------- */
+table{border-collapse:separate;border-spacing:0;width:100%;font-variant-numeric:tabular-nums}
+th{font-weight:600;font-size:12.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);background:var(--panel-2);white-space:nowrap}
+th:first-child{border-radius:10px 0 0 10px}
+th:last-child{border-radius:0 10px 10px 0}
+th,td{padding:13px 14px;text-align:left}
+td{border-bottom:1px solid var(--line)}
+tr:last-child>td{border-bottom:0}
+tr:hover>td{background:var(--panel-2)}
+th.r,td.r{text-align:right}
+td a{font-weight:600;text-decoration:none}
+td a:hover{text-decoration:underline}
+td a[href*="/del/"]{color:var(--danger)}
+.badge{display:inline-block;padding:2px 11px;border-radius:999px;font-size:12.5px;font-weight:700;line-height:1.6}
+.badge.warn{background:var(--warn-soft);color:var(--warn)}
+.badge.info{background:var(--info-soft);color:var(--info)}
+.badge.ok{background:var(--ok-soft);color:var(--ok)}
+.badge.low{background:var(--danger-soft);color:var(--danger)}
+
+/* ---------- Form ---------- */
+.c form{max-width:560px}
+.c form:has(input[name=r]){max-width:none;display:flex;gap:8px;margin-bottom:16px}
+.c form:has(input[name=r]) input[name=plat]{margin:0}
+label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:15px 0 3px}
+input,select{display:block;width:100%;padding:11px 13px;margin:3px 0;border:1px solid var(--line);border-radius:11px;background:var(--panel-2);color:var(--text);font:inherit;transition:border-color .15s,box-shadow .15s,background .15s}
+input:hover,select:hover{border-color:var(--muted)}
+input:focus,select:focus{outline:0;background:var(--panel);border-color:var(--primary);box-shadow:0 0 0 4px var(--primary-soft)}
+button,.b{display:inline-flex;align-items:center;justify-content:center;gap:6px;width:auto;background:var(--primary);color:var(--on-primary);border:1px solid var(--primary);padding:10px 20px;border-radius:11px;font:inherit;font-weight:700;cursor:pointer;text-decoration:none;box-shadow:0 1px 2px rgba(14,26,35,.14);transition:background .15s,border-color .15s,transform .05s}
+button:hover,.b:hover{background:var(--primary-hover);border-color:var(--primary-hover);color:var(--on-primary)}
+button:active,.b:active{transform:translateY(1px)}
+button:focus-visible,.b:focus-visible,a:focus-visible{outline:3px solid var(--primary-soft);outline-offset:2px;box-shadow:0 0 0 1px var(--primary)}
+button[type=button]{background:var(--panel);color:var(--text);border-color:var(--line);box-shadow:none}
+button[type=button]:hover{background:var(--panel-2);border-color:var(--muted);color:var(--text)}
+.err{color:var(--danger);background:var(--danger-soft);border-radius:11px;padding:10px 14px;margin:0 0 14px;font-weight:500}
+
+/* ---------- Tab laporan ---------- */
+.c>.b{margin:0 6px 6px 0;background:var(--panel-2);color:var(--text);border-color:var(--line);box-shadow:none}
+.c>.b:hover{background:var(--primary-soft);border-color:var(--primary);color:var(--primary)}
+.c>.b.on{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+
+/* ---------- Login / daftar ---------- */
+.auth{max-width:400px;margin:12vh auto 0;padding:36px 32px;overflow:visible;box-shadow:var(--shadow-lg)}
+.auth h2{text-align:center;margin-bottom:22px}
+.auth input{margin:8px 0;padding:13px}
+.auth button{margin-top:10px;padding:13px;width:100%}
+.auth p{text-align:center;margin:18px 0 0}
+
+/* ---------- Mobile ---------- */
+@media (max-width:860px){
+  body.app{display:block}
+  nav{position:sticky;top:0;height:auto;flex-direction:row;align-items:center;gap:2px;padding:10px;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line);z-index:5}
+  nav .brand{padding:0 10px 0 4px;white-space:nowrap}
+  nav a{white-space:nowrap;padding:8px 12px}
+  nav a .i{display:none}
+  nav a.on::before{display:none}
+  nav .who{display:none}
+  nav a.out{margin:0 0 0 auto}
+  body.app main{padding:20px 14px 48px}
+  .c{padding:18px}
+  h2{font-size:22px}
+  .k{font-size:26px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ---------- Cetak nota ---------- */
+@media print{
+  :root{--bg:#fff;--panel:#fff;--text:#000;--line:#ccc;--shadow:none}
+  nav,button,.b,form,#rows,template,script,.c:not(:first-child){display:none!important}
+  body.app{display:block}
+  body.app main{padding:0}
+  .c{border:0;padding:0;box-shadow:none}
+}
+</style>
+</head>
+<body class="{{ 'app' if request.session.get('u') else '' }}">
+
+<!-- Kumpulan ikon -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></symbol>
+  <symbol id="i-cog" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></symbol>
+  <symbol id="i-staff" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-3.5 3-6 7-6s7 2.5 7 6M16 4.5a3.5 3.5 0 0 1 0 7M18 14c2.5.6 4 2.6 4 6"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2z"/><path d="M9 8h6M9 12h6"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-cash" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></symbol>
+</svg>
+
+{% set u = request.session.get('u') %}
+{% if u %}
+<nav>
+  <div class="brand"><i><svg class="i"><use href="#i-wrench"/></svg></i>Bengkel</div>
+  <a href="/dashboard"><svg class="i"><use href="#i-home"/></svg>Dashboard</a>
+  <a href="/m/customer"><svg class="i"><use href="#i-user"/></svg>Customer</a>
+  <a href="/m/sparepart"><svg class="i"><use href="#i-cog"/></svg>Sparepart</a>
+  <a href="/m/jasa"><svg class="i"><use href="#i-wrench"/></svg>Jasa</a>
+  <a href="/m/users"><svg class="i"><use href="#i-staff"/></svg>Staff</a>
+  <a href="/m/booking"><svg class="i"><use href="#i-cal"/></svg>Booking</a>
+  <a href="/transaksi"><svg class="i"><use href="#i-receipt"/></svg>Transaksi</a>
+  <a href="/laporan"><svg class="i"><use href="#i-chart"/></svg>Laporan</a>
+  <div class="who">
+    <i class="av">{{ u.nama[:1]|upper }}</i>
+    <div><b>{{ u.nama }}</b><small>{{ u.role }}</small></div>
+  </div>
+  <a class="out" href="/logout"><svg class="i"><use href="#i-out"/></svg>Keluar</a>
+</nav>
+{% endif %}
+
+<main>{% block body %}{% endblock %}</main>
+
+<script>
+// 1. Menu aktif
+document.querySelectorAll('nav a[href]').forEach(function(a){
+  var p=location.pathname,h=a.getAttribute('href');
+  if(h!=='/logout'&&(p===h||p.indexOf(h+'/')===0))a.classList.add('on');
+});
+
+// 2. Tab laporan aktif
+if(location.pathname==='/laporan'){
+  var rq=new URLSearchParams(location.search).get('r')||'1';
+  document.querySelectorAll('.c>a.b').forEach(function(a){
+    if(new URL(a.href).searchParams.get('r')===rq)a.classList.add('on');
+  });
+}
+
+// 3. Ikon kartu dashboard
+var icons={'Customer':'user','Sparepart':'cog','Booking Pending':'clock','Pendapatan Hari Ini':'cash'};
+document.querySelectorAll('.g .c').forEach(function(c){
+  var n=c.firstChild,label=n&&n.nodeType===3?n.textContent.trim():'';
+  if(!icons[label])return;
+  var s=document.createElement('span');s.className='ico';
+  s.innerHTML='<svg class="i"><use href="#i-'+icons[label]+'"/></svg>';
+  c.appendChild(s);
+});
+
+// 4. Tabel: rata kanan + format Rupiah untuk kolom angka
+var money={'Harga Beli':1,'Harga Jual':1,'Harga':1,'Subtotal':1,'Total':1,'Omzet':1},
+    num={'Stok':1,'Qty':1,'Terjual':1,'Booking Selesai':1},
+    maybe={'Sparepart':1,'Jasa':1}; // di laporan pendapatan = angka, di laporan lain = nama
+document.querySelectorAll('table').forEach(function(tb){
+  if(!tb.rows.length)return;
+  [].forEach.call(tb.rows[0].cells,function(th,i){
+    var name=th.textContent.trim(),rows=[].slice.call(tb.rows,1),cells=rows.map(function(r){return r.cells[i]}).filter(Boolean);
+    var isMoney=money[name]||(maybe[name]&&cells.length&&cells.every(function(c){return /^\d+$/.test(c.textContent.trim())}));
+    if(!(isMoney||num[name]))return;
+    th.classList.add('r');
+    cells.forEach(function(c){
+      c.classList.add('r');
+      var t=c.textContent.trim();
+      if(isMoney&&/^-?\d+$/.test(t))c.textContent='Rp '+Number(t).toLocaleString('id-ID');
+    });
+  });
+});
+
+// 5. Badge status booking & stok menipis
+var map={Pending:'warn',Diproses:'info',Selesai:'ok'};
+document.querySelectorAll('td').forEach(function(td){
+  var t=td.textContent.trim();
+  if(map[t]&&!td.children.length)td.innerHTML='<span class="badge '+map[t]+'">'+t+'</span>';
+});
+document.querySelectorAll('table').forEach(function(tb){
+  if(!tb.closest('.c')||!tb.closest('.c').textContent.includes('menipis'))return;
+  var i=[].map.call(tb.rows[0].cells,function(h){return h.textContent.trim()}).indexOf('Stok');
+  if(i<0)return;
+  [].slice.call(tb.rows,1).forEach(function(r){
+    var c=r.cells[i];if(c)c.innerHTML='<span class="badge low">'+c.textContent.trim()+'</span>';
+  });
+});
+
+// 6. Tampilan "tidak ada data"
+document.querySelectorAll('.c p').forEach(function(p){
+  if(p.textContent.trim()==='Tidak ada data.')p.classList.add('empty');
+});
+</script>
+</body>
+</html>
